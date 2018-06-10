@@ -1,0 +1,91 @@
+version: '3.6'
+services:
+  db:
+    image: mariadb:10.2
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
+
+  cache:
+    image: redis:4-alpine
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - cache:/data/
+    networks:
+      - backend
+    labels:
+      - "traefik.enable=false"
+
+  app:
+#    image: jjtc/bookstack-ppm:0.22-r0
+    build: ./app/
+    restart: unless-stopped
+    depends_on:
+      - db
+      - cache
+    volumes:
+      - .env:/app/.env:rw
+      - ./app/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./app/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./app/default.conf:/etc/nginx/sites-enabled/default:ro
+      - uploads:/var/www/html/public/uploads:rw
+      - storage:/var/www/html/public/storage:rw
+    expose:
+      - "80/tcp"
+    networks:
+      - web
+      - backend
+    labels:
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.STSSeconds=31536000"
+      - "traefik.backend=bookstack"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.rule=Host:${APP_URL_BASE}"
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.default.protocol=http"
+
+  # av:
+  #   image: jjtc/av:0.100.0-r0
+  #   build: ./av/
+  #   restart: unless-stopped
+  #   tty: true
+  #   environment:
+  #     - TZ=${TZ}
+  #   volumes:
+  #     - ./av/conf/:/etc/clamav/
+  #   networks:
+  #     - backend
+  #   labels:
+  #     - "traefik.enable=false"
+
+  #traefik:
+  #  image: traefik:latest
+  #  restart: unless-stopped
+  #  command: traefik --docker --acme=true --acme.domains='your.domain.tld' --acme.email='your@email.tld' --acme.entrypoint=https --acme.storagefile=acme.json --defaultentrypoints=http --defaultentrypoints=https --entryPoints='Name$
+  #  ports:
+  #    - 80:80
+  #    - 443:443
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  backend:
+  web:
+    external: true
+
+volumes:
+  db-data:
+  cache:
+  uploads:
+  storage:
