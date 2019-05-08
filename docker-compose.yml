@@ -1,7 +1,7 @@
-version: '3.6'
+version: '3.5'
 services:
   db:
-    image: mariadb:10.2
+    image: mariadb:10.3
     restart: unless-stopped
     environment:
       - TZ=${TZ}
@@ -15,7 +15,7 @@ services:
       - backend
 
   cache:
-    image: redis:4-alpine
+    image: redis:5-alpine
     restart: unless-stopped
     environment:
       - TZ=${TZ}
@@ -27,7 +27,7 @@ services:
       - "traefik.enable=false"
 
   app:
-#    image: jjtc/bookstack-ppm:0.22-r0
+    image: jjtc/bookstack-ppm:0.26.1-r0
     build: ./app/
     restart: unless-stopped
     depends_on:
@@ -38,8 +38,8 @@ services:
       - ./app/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./app/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./app/default.conf:/etc/nginx/sites-enabled/default:ro
-      - uploads:/var/www/html/public/uploads:rw
-      - storage:/var/www/html/public/storage:rw
+      - uploads:/app/public/uploads:rw
+      - storage:/app/public/storage:rw
     expose:
       - "80/tcp"
     networks:

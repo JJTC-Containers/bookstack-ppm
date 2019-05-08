@@ -1,21 +1,15 @@
 FROM alpine:edge
 
-LABEL maintainer JJTC "docker@jjtc.eu"
+LABEL maintainer="JJTC <docker@jjtc.eu>"
 
-ENV version=1.0.2 \
-    http_version=1.0.2 \
+ENV PPM_VERSION=2.0.0 \
+    PPM_HTTP_VERSION=2.0.1 \
     BOOKSTACK=BookStack \
-    BOOKSTACK_VERSION=0.22.0 \
+    BOOKSTACK_VERSION=0.26.1 \
     BOOKSTACK_HOME="/app"
 
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
 
-#COPY php.ini /usr/local/etc/php/conf.d/php.ini
-#COPY default.conf /etc/nginx/sites-enabled/default
-#COPY nginx.conf /etc/nginx/nginx.conf
-
-# Below the following PHP extensions are installed PCNTL, PDO_MYSQL, ZIP, GD, Tidy, XML, Redis, Memcached, msgpack, igbinary
-# PHP extensions such as DOM, OpenSSL, PDO, MBstring, Tokenizer are provided by the base image.
 RUN set -ex \
   && chmod +x /app/docker-entrypoint.sh \
   # ensure www-data user exists
@@ -48,6 +42,7 @@ RUN set -ex \
      php7-openssl \
      php7-pcntl \
      php7-pdo_mysql \
+     php7-pecl-imagick \
      php7-phar \
      php7-posix \
      php7-redis \
@@ -65,7 +60,7 @@ RUN set -ex \
   && mkdir -p /ppm/run \
   && cd /ppm \
   && chmod -R 777 run/ \
-  && composer require php-pm/php-pm:${version} php-pm/httpkernel-adapter:${http_version} \
+  && composer require php-pm/php-pm:${PPM_VERSION} php-pm/httpkernel-adapter:${PPM_HTTP_VERSION} \
   && echo "Get BookStack:" \
   && mkdir -p ${BOOKSTACK_HOME} \
   && cd ${BOOKSTACK_HOME} \
@@ -76,7 +71,9 @@ RUN set -ex \
   && echo "Get Dependencies:" \
   && composer install \
   && echo "Changing ownership:" \
-  && chown -R www-data:www-data .
+  && chown -R www-data:www-data . \
+  && echo "Ensure Nginx got access to tmp folder:" \
+  && chown www-data:root -R /var/tmp/nginx/
 
 WORKDIR $BOOKSTACK_HOME
 
