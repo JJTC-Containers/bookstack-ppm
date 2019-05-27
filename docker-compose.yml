@@ -27,7 +27,7 @@ services:
       - "traefik.enable=false"
 
   app:
-    image: jjtc/bookstack-ppm:0.26.1-r0
+    image: jjtc/bookstack-ppm:0.26.2-r0
     build: ./app/
     restart: unless-stopped
     depends_on:

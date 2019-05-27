@@ -5,7 +5,7 @@ LABEL maintainer="JJTC <docker@jjtc.eu>"
 ENV PPM_VERSION=2.0.0 \
     PPM_HTTP_VERSION=2.0.1 \
     BOOKSTACK=BookStack \
-    BOOKSTACK_VERSION=0.26.1 \
+    BOOKSTACK_VERSION=0.26.2 \
     BOOKSTACK_HOME="/app"
 
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
