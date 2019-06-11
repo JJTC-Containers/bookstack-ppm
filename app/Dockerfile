@@ -5,7 +5,7 @@ LABEL maintainer="JJTC <docker@jjtc.eu>"
 ENV PPM_VERSION=2.0.0 \
     PPM_HTTP_VERSION=2.0.1 \
     BOOKSTACK=BookStack \
-    BOOKSTACK_VERSION=0.26.2 \
+    BOOKSTACK_VERSION=0.26.3 \
     BOOKSTACK_HOME="/app"
 
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
@@ -73,7 +73,7 @@ RUN set -ex \
   && echo "Changing ownership:" \
   && chown -R www-data:www-data . \
   && echo "Ensure Nginx got access to tmp folder:" \
-  && chown www-data:root -R /var/tmp/nginx/
+  && chown www-data:root -R /var/lib/nginx/tmp
 
 WORKDIR $BOOKSTACK_HOME
 
