@@ -8,13 +8,14 @@ steps:
     context: app
     dockerfile: app/Dockerfile
     tags: 
-      - latest
-      - ${DRONE_TAG}
+    - latest
+    - ${DRONE_TAG}
     repo: jjtc/bookstack-ppm
     username:
       from_secret: docker_username
     password:
       from_secret: docker_password
-  when:
-    event:
-      - tag
+
+trigger:
+  event:
+  - tag
