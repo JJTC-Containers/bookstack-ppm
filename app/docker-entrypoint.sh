@@ -17,4 +17,4 @@ echo "Getting PPM ready:"
 trapIt () { "$@"& pid="$!"; trap 'kill -INT $pid' INT TERM; while kill -0 $pid > /dev/null 2>&1; do wait $pid; ec="$?"; done; exit $ec;};
 
 echo "Starting PPM:"
-trapIt su-exec www-data:www-data /ppm/vendor/bin/ppm start --ansi --port=8080 --socket-path=/ppm/run --pidfile=/ppm/ppm.pid --bootstrap=laravel --static-directory=public/ --app-env=prod
+trapIt su-exec www-data:www-data /ppm/vendor/bin/ppm start --ansi --no-interaction --config=ppm.json
