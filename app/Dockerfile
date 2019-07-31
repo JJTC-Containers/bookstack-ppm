@@ -19,9 +19,7 @@ RUN set -ex \
   && apk update \
   && echo "Setting up PHP extensions" \
   && apk add --no-cache \
-     bash \
      curl \
-     su-exec \
      nginx \
      tar \
      php7 \
@@ -61,6 +59,7 @@ RUN set -ex \
   && cd /ppm \
   && chmod -R 777 run/ \
   && composer require php-pm/php-pm:${PPM_VERSION} php-pm/httpkernel-adapter:${PPM_HTTP_VERSION} \
+  && chown www-data:www-data -R . \
   && echo "Get BookStack:" \
   && mkdir -p ${BOOKSTACK_HOME} \
   && cd ${BOOKSTACK_HOME} \
@@ -72,12 +71,14 @@ RUN set -ex \
   && composer install \
   && echo "Changing ownership:" \
   && chown www-data:www-data -R . \
-  && echo "Ensure Nginx got access to tmp folder:" \
-  && chown www-data:www-data -R /var/lib/nginx/tmp
+  && echo "Ensure www-data got access to Nginx folders:" \
+  && chown www-data:www-data -R /var/lib/nginx /var/log/nginx
+
+USER www-data:www-data
 
 WORKDIR $BOOKSTACK_HOME
 
-EXPOSE 80
+EXPOSE 8080/tcp
 
 VOLUME ["$BOOKSTACK_HOME/public/uploads", "$BOOKSTACK_HOME/public/storage"]
 

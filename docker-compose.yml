@@ -25,7 +25,7 @@ services:
       - backend
 
   app:
-    image: jjtc/bookstack-ppm:0.26.3-r3
+    image: jjtc/bookstack-ppm:0.26.3-r4
     build: ./app/
     restart: unless-stopped
     depends_on:
@@ -40,7 +40,7 @@ services:
       - uploads:/app/public/uploads:rw
       - storage:/app/public/storage:rw
     expose:
-      - "80/tcp"
+      - "8080/tcp"
     networks:
       - web
       - backend
@@ -51,7 +51,7 @@ services:
       - "traefik.docker.network=web"
       - "traefik.frontend.rule=Host:${APP_URL_BASE}"
       - "traefik.enable=true"
-      - "traefik.port=80"
+      - "traefik.port=8080"
       - "traefik.default.protocol=http"
 
   # av:
