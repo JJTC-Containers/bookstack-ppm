@@ -67,13 +67,13 @@ RUN set -ex \
   && curl -LJO https://github.com/BookStackApp/BookStack/archive/v${BOOKSTACK_VERSION}.tar.gz \
   && tar --strip-components=1 -xzf BookStack-${BOOKSTACK_VERSION}.tar.gz \
   && rm -rf ${BOOKSTACK}-${BOOKSTACK_VERSION}.tar.gz .env.example .gitattributes .github .gitignore .travis.yml tests/ public/index.php \
-  && curl https://raw.githubusercontent.com/BookStackApp/BookStack/873b1099f81f6a9d2619644aef0587e2b73d918a/bootstrap/autoload.php -o bootstrap/autoload.php \
+  && ln -s init.php bootstrap/autoload.php \
   && echo "Get Dependencies:" \
   && composer install \
   && echo "Changing ownership:" \
-  && chown -R www-data:www-data . \
+  && chown www-data:www-data -R . \
   && echo "Ensure Nginx got access to tmp folder:" \
-  && chown www-data:root -R /var/lib/nginx/tmp
+  && chown www-data:www-data -R /var/lib/nginx/tmp
 
 WORKDIR $BOOKSTACK_HOME
 
