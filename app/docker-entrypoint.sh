@@ -16,7 +16,16 @@ echo "Starting Nginx:"
 nginx
 
 echo "Getting PPM ready:"
-trapIt () { "$@"& pid="$!"; trap 'kill -INT $pid' INT TERM; while kill -0 $pid > /dev/null 2>&1; do wait $pid; ec="$?"; done; exit $ec;};
+trapIt() {
+    "$@" &
+    pid="$!"
+    trap 'kill -INT $pid' INT TERM
+    while kill -0 $pid >/dev/null 2>&1; do
+        wait $pid
+        ec="$?"
+    done
+    exit $ec
+}
 
 echo "Starting PPM:"
 trapIt /ppm/vendor/bin/ppm start --ansi --no-interaction --config=ppm.json
