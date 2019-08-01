@@ -40,7 +40,7 @@ services:
       - uploads:/app/public/uploads:rw
       - storage:/app/public/storage:rw
     expose:
-      - "8080/tcp"
+      - "8888/tcp"
     networks:
       - web
       - backend
@@ -51,7 +51,7 @@ services:
       - "traefik.docker.network=web"
       - "traefik.frontend.rule=Host:${APP_URL_BASE}"
       - "traefik.enable=true"
-      - "traefik.port=8080"
+      - "traefik.port=8888"
       - "traefik.default.protocol=http"
 
   # av:
