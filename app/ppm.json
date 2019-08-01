@@ -3,7 +3,7 @@
     "host": "127.0.0.1",
     "port": 8080,
     "workers": 8,
-    "app-env": "prod",
+    "app-env": "production",
     "debug": 0,
     "logging": 1,
     "static-directory": "public\/",
