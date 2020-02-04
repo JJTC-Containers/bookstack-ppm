@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:3.11
 
 LABEL maintainer="JJTC <docker@jjtc.eu>"
 
