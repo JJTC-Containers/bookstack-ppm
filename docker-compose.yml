@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.7'
 services:
   db:
     image: mariadb:10.4
@@ -45,14 +45,17 @@ services:
       - web
       - backend
     labels:
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.STSSeconds=31536000"
-      - "traefik.backend=bookstack"
-      - "traefik.docker.network=web"
-      - "traefik.frontend.rule=Host:${APP_URL_BASE}"
       - "traefik.enable=true"
-      - "traefik.port=8888"
-      - "traefik.default.protocol=http"
+      - "traefik.http.routers.bookstack.entrypoints=http"
+      - "traefik.http.routers.bookstack.rule=Host(`${APP_URL_BASE}`)"
+      - "traefik.http.routers.bookstack.middlewares=redirect-https@file"
+      - "traefik.http.routers.bookstack-secure.entrypoints=https"
+      - "traefik.http.routers.bookstack-secure.rule=Host(`${APP_URL_BASE}`)"
+      - "traefik.http.routers.bookstack-secure.tls=true"
+      - "traefik.http.routers.bookstack-secure.tls.certresolver=default"
+      - "traefik.http.routers.bookstack-secure.service=bookstack"
+      - "traefik.http.services.bookstack.loadbalancer.server.scheme=http"
+      - "traefik.http.services.bookstack.loadbalancer.server.port=8888"
 
   # av:
   #   image: jjtc/av:0.100.0-r0
