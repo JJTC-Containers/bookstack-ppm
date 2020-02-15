@@ -67,6 +67,9 @@ RUN set -ex \
   && tar --strip-components=1 -xzf BookStack-${BOOKSTACK_VERSION}.tar.gz \
   && rm -rf ${BOOKSTACK}-${BOOKSTACK_VERSION}.tar.gz .env.example .gitattributes .github .gitignore .travis.yml tests/ public/index.php \
   && ln -s init.php bootstrap/autoload.php \
+  && curl -LJO https://gist.githubusercontent.com/TBK/6abf876e9559cf2477ad0d16bbf648db/raw/f5471c23e9bcf2f3cf0544f47efe610d5e40f13e/validator_and_shelf_cover_fix.patch \
+  && patch -p1 < validator_and_shelf_cover_fix.patch \
+  && rm validator_and_shelf_cover_fix.patch \
   && echo "Get Dependencies:" \
   && composer install \
   && echo "Changing ownership:" \
