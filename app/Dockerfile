@@ -66,7 +66,7 @@ RUN set -ex \
   && cd ${BOOKSTACK_HOME} \
   && curl -LJO https://github.com/BookStackApp/BookStack/archive/v${BOOKSTACK_VERSION}.tar.gz \
   && tar --strip-components=1 -xzf BookStack-${BOOKSTACK_VERSION}.tar.gz \
-  && rm -rf ${BOOKSTACK}-${BOOKSTACK_VERSION}.tar.gz .env.example .gitattributes .github .gitignore .travis.yml tests/ public/index.php \
+  && rm -rf ${BOOKSTACK}-${BOOKSTACK_VERSION}.tar.gz .env.example .env.example.complete .gitattributes .github .gitignore .travis.yml tests/ public/index.php \
   && ln -s init.php bootstrap/autoload.php \
   && patch -p1 < file_validation.patch \
   && rm file_validation.patch \
