@@ -17,6 +17,8 @@ RUN set -ex \
   # 82 is the standard uid/gid for "www-data" in Alpine
   && addgroup -g 82 -S www-data \
   && adduser -u 82 -D -S -G www-data www-data \
+  && addgroup -S bookstack \
+  && adduser -S -D -H -s /sbin/nologin  -G bookstack  -g bookstack bookstack \
   && apk update \
   && echo "Setting up PHP extensions" \
   && apk add --no-cache \
@@ -73,7 +75,7 @@ RUN set -ex \
   && echo "Get Dependencies:" \
   && composer install \
   && echo "Changing ownership:" \
-  && chown www-data:www-data -R . \
+  && chown bookstack:bookstack -R . \
   && echo "Ensure www-data got access to Nginx folders:" \
   && chown www-data:www-data -R /var/lib/nginx /var/log/nginx
 

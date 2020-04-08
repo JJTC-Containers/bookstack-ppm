@@ -6,8 +6,8 @@ if [ ! -f /app/.env ]; then
 fi
 php artisan migrate --no-interaction --force
 
-echo "Setting folder permissions for uploads:"
-chown -R www-data:www-data bootstrap/cache public/uploads storage/uploads
+echo "Setting folder permissions for www-data:"
+chown -R www-data:bookstack bootstrap/cache public/uploads storage
 
 php artisan cache:clear
 php artisan view:clear
