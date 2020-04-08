@@ -12,9 +12,6 @@ chown -R www-data:bookstack bootstrap/cache public/uploads storage
 php artisan cache:clear
 php artisan view:clear
 
-echo "Starting Nginx:"
-nginx
-
 echo "Getting PPM ready:"
 trapIt() {
     "$@" &
@@ -27,5 +24,5 @@ trapIt() {
     exit $ec
 }
 
-echo "Starting PPM:"
-trapIt /ppm/vendor/bin/ppm start --ansi --no-interaction --config=ppm.json
+echo "Starting Nginx & PPM:"
+multirun nginx trapIt /ppm/vendor/bin/ppm start --ansi --no-interaction --config=ppm.json

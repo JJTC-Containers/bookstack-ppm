@@ -23,6 +23,7 @@ RUN set -ex \
   && echo "Setting up PHP extensions" \
   && apk add --no-cache \
      curl \
+     multirun \
      nginx \
      tar \
      php7 \
