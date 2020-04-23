@@ -16,7 +16,9 @@ echo "Getting PPM ready:"
 trapIt() {
     "$@" &
     pid="$!"
-    trap 'kill -INT $pid' INT TERM
+    for SGNL in INT TERM CHLD USR1; do
+        trap "kill -$SGNL $pid" "$SGNL";
+    done
     while kill -0 $pid >/dev/null 2>&1; do
         wait $pid
         ec="$?"
