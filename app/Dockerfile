@@ -1,6 +1,6 @@
 FROM alpine:3.11
 
-LABEL maintainer="JJTC <docker@jjtc.eu>"
+LABEL maintainer="JJTC <oci@jjtc.eu>"
 
 ENV PPM_VERSION=2.0.3 \
     PPM_HTTP_VERSION=2.0.3 \
@@ -8,11 +8,11 @@ ENV PPM_VERSION=2.0.3 \
     BOOKSTACK_VERSION=0.29.2 \
     BOOKSTACK_HOME="/app"
 
-COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+COPY entrypoint.sh /app/entrypoint.sh
 COPY file_validation.patch /app/file_validation.patch
 
 RUN set -ex \
-  && chmod +x /app/docker-entrypoint.sh \
+  && chmod +x /app/entrypoint.sh \
   # ensure www-data user exists
   # 82 is the standard uid/gid for "www-data" in Alpine
   && addgroup -g 82 -S www-data \
@@ -88,4 +88,4 @@ EXPOSE 8080/tcp
 
 VOLUME ["$BOOKSTACK_HOME/public/uploads", "$BOOKSTACK_HOME/public/storage"]
 
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
