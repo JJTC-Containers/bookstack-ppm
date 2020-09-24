@@ -3,7 +3,7 @@ FROM alpine:3.11
 LABEL maintainer="JJTC <oci@jjtc.eu>"
 
 ENV PPM_VERSION=2.1.3 \
-    PPM_HTTP_VERSION=2.0.3 \
+    PPM_HTTP_VERSION=2.0.6 \
     BOOKSTACK=BookStack \
     BOOKSTACK_VERSION=0.29.2 \
     BOOKSTACK_HOME="/app"
