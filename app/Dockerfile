@@ -1,15 +1,14 @@
-FROM alpine:3.11
+FROM alpine:3.12
 
 LABEL maintainer="JJTC <oci@jjtc.eu>"
 
 ENV PPM_VERSION=2.1.3 \
     PPM_HTTP_VERSION=2.0.6 \
     BOOKSTACK=BookStack \
-    BOOKSTACK_VERSION=0.29.2 \
+    BOOKSTACK_VERSION=0.30.0 \
     BOOKSTACK_HOME="/app"
 
 COPY entrypoint.sh /app/entrypoint.sh
-COPY file_validation.patch /app/file_validation.patch
 
 RUN set -ex \
   && chmod +x /app/entrypoint.sh \
@@ -71,8 +70,6 @@ RUN set -ex \
   && tar --strip-components=1 -xzf BookStack-${BOOKSTACK_VERSION}.tar.gz \
   && rm -rf ${BOOKSTACK}-${BOOKSTACK_VERSION}.tar.gz .env.example .env.example.complete .gitattributes .github .gitignore .travis.yml tests/ public/index.php \
   && ln -s init.php bootstrap/autoload.php \
-  && patch -p1 < file_validation.patch \
-  && rm file_validation.patch \
   && echo "Get Dependencies:" \
   && composer install \
   && echo "Changing ownership:" \
