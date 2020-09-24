@@ -6,9 +6,6 @@ if [ ! -f /app/.env ]; then
 fi
 php artisan migrate --no-interaction --force
 
-echo "Setting folder permissions for www-data:"
-chown -R www-data:bookstack bootstrap/cache public/uploads storage
-
 php artisan cache:clear
 php artisan view:clear
 
@@ -27,4 +24,4 @@ trapIt() {
 }
 
 echo "Starting Nginx & PPM:"
-multirun nginx trapIt /ppm/vendor/bin/ppm start --ansi --no-interaction --config=ppm.json
+multirun "nginx" "$( trapIt /ppm/vendor/bin/ppm start --ansi --no-interaction --config=ppm.json )"

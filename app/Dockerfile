@@ -74,8 +74,12 @@ RUN set -ex \
   && composer install \
   && echo "Changing ownership:" \
   && chown bookstack:bookstack -R . \
+  && echo "Setting folder permissions for www-data:" \
+  && chown www-data:bookstack -R bootstrap/cache public/uploads storage \
   && echo "Ensure www-data got access to Nginx folders:" \
-  && chown www-data:www-data -R /var/lib/nginx /var/log/nginx
+  && chown www-data:www-data -R /var/lib/nginx /var/log/nginx \
+  && echo "Giving all system users access to multirun:" \
+  && chmod 0755 /usr/bin/multirun
 
 USER www-data:www-data
 
