@@ -5,7 +5,7 @@ LABEL maintainer="JJTC <oci@jjtc.eu>"
 ENV PPM_VERSION=2.2.0 \
     PPM_HTTP_VERSION=2.0.6 \
     BOOKSTACK=BookStack \
-    BOOKSTACK_VERSION=0.30.0 \
+    BOOKSTACK_VERSION=0.31.0 \
     BOOKSTACK_HOME="/app"
 
 COPY entrypoint.sh /app/entrypoint.sh
@@ -50,7 +50,6 @@ RUN set -ex \
      php7-session \
      php7-simplexml \
      php7-sockets \
-     php7-tidy \
      php7-tokenizer \
      php7-xml \
      php7-xmlwriter \
