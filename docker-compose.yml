@@ -1,10 +1,11 @@
 version: '3.7'
+
 services:
   db:
     image: mariadb:10.5
     restart: unless-stopped
     environment:
-      - TZ=${TZ}
+      - TZ=${APP_TIMEZONE}
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
       - MYSQL_DATABASE=${DB_DATABASE}
       - MYSQL_USER=${DB_USERNAME}
@@ -18,7 +19,7 @@ services:
     image: redis:6-alpine
     restart: unless-stopped
     environment:
-      - TZ=${TZ}
+      - TZ=${APP_TIMEZONE}
     volumes:
       - cache:/data/
     networks:
@@ -26,6 +27,7 @@ services:
 
   app:
     image: jjtc/bookstack-ppm:0.31.6-r0
+    init: true
     build: ./app/
     restart: unless-stopped
     depends_on:
@@ -48,7 +50,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.bookstack.entrypoints=http"
       - "traefik.http.routers.bookstack.rule=Host(`${APP_URL_BASE}`)"
-      - "traefik.http.routers.bookstack.middlewares=redirect-https@file"
       - "traefik.http.routers.bookstack-secure.entrypoints=https"
       - "traefik.http.routers.bookstack-secure.rule=Host(`${APP_URL_BASE}`)"
       - "traefik.http.routers.bookstack-secure.tls=true"
@@ -72,7 +73,7 @@ services:
   #     - "traefik.enable=false"
 
   #traefik:
-  #  image: traefik:2.1
+  #  image: traefik:2.4
   #  restart: unless-stopped
   #  security_opt:
   #   - no-new-privileges:true
