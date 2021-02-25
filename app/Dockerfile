@@ -5,7 +5,7 @@ LABEL maintainer="JJTC <oci@jjtc.eu>"
 ENV PPM_VERSION=2.2.1 \
     PPM_HTTP_VERSION=2.0.6 \
     BOOKSTACK=BookStack \
-    BOOKSTACK_VERSION=0.31.4 \
+    BOOKSTACK_VERSION=0.31.6 \
     BOOKSTACK_HOME="/app"
 
 COPY entrypoint.sh /app/entrypoint.sh
